@@ -7,6 +7,9 @@ function p = predict(Theta1, Theta2, X)
 m = size(X, 1);
 num_labels = size(Theta2, 1);
 
+% add bias 1 to a1, which is X;
+X = [ones(m, 1) X];
+
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
 
@@ -21,16 +24,34 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+% Total 5000 samples from X(5000by401, including bias), which is a1; 
+% predict one sample at a time;
+for i = 1:m
+    
+    % use Theta1(25by401) and X(i,;)(1by401) to calculate a2(25by1)
+    z2 = Theta1 * X(i,:)';
+    a2 = sigmoid(z2);
+    
+    % add bias 1 to a2(26by1);
+    a2 = [1; a2];
+    
+    % use Theta2(10by26) and a2(26by1) to calculate a2(10by1)
+    z3 = Theta2 * a2; 
+    a3 = sigmoid(z3);
+    
+    % The highest match in 10 labels is the predict of this sample;
+    for j = 1:num_labels
+        if a3(j) == max(a3)
+            p(i) = j;
+        end
+    end
 
-a1 = [ones(m,1) X];
-z2 = a1 *Theta1';
-a2 = [ones(size(z2),1) sigmoid(z2)];
-z3 = a2*Theta2';
-a3 = sigmoid(z3);
+end
 
-[predict_max, index_max] = max(a3, [], 2);
 
-p = index_max;
+
+
+
 
 
 

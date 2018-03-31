@@ -7,6 +7,8 @@ function p = predictOneVsAll(all_theta, X)
 %  regression theta vector for the i-th class. You should set p to a vector
 %  of values from 1..K (e.g., p = [1; 3; 1; 2] predicts classes 1, 3, 1, 2
 %  for 4 examples) 
+fprintf('\nPred Function Started Here! <==============================\n');
+% fprintf('\nPred Function Started Here! <==============================\n');
 
 m = size(X, 1);
 num_labels = size(all_theta, 1);
@@ -28,14 +30,34 @@ X = [ones(m, 1) X];
 %       max element, for more information see 'help max'. If your examples 
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
-%
+%       
 
-predict = sigmoid(X*all_theta');
-[predict_max, index_max] = max(predict, [], 2);
-p = index_max;
+%   p = PREDICT(theta, X) computes the predictions for X using a 
+%   threshold at 0.5 (i.e., if sigmoid(theta'*x) >= 0.5, predict 1)
 
+for i = 1:m
+    
+    q = zeros(num_labels,1);
+    for j = 1:num_labels
+        z = all_theta(j,:) * X(i,:)';
+        s = sigmoid(z);
+    
+        if s >= 0.5
+            q(j) = q(j) + 1;
+            % fprintt('q(%i)=%i\n', i, q(j));
+        end
+    end
+    
+    for j = 1:num_labels
+        if q(j) == max(q)
+            p(i) = j;
+        end
+    end
+    
+end
 
-
+% p
+% size(p)
 
 % =========================================================================
 
