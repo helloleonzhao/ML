@@ -13,11 +13,15 @@ figure; hold on;
 %
 
 
-positive = find(y==1);
-negative = find(y==0);
+% Find Indices of Positive and Negative Examples
+pos = find(y==1); 
+neg = find(y == 0);
 
-plot(X(positive, :), 'b+');
-plot(X(negative, :), 'ro');
+% Plot Examples
+plot(X(pos, 1), X(pos, 2), 'k+','LineWidth', 2, 'MarkerSize', 7);
+hold on;
+plot(X(neg, 1), X(neg, 2), 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 7);
+
 
 
 

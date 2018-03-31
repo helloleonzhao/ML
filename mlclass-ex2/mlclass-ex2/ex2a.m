@@ -33,21 +33,31 @@ X = data(:, [1, 2]); y = data(:, 3);
 fprintf(['Plotting data with + indicating (y = 1) examples and o ' ...
          'indicating (y = 0) examples.\n']);
 
-plotData(X, y);
+%% plotData(X, y);
 
 % Put some labels 
-hold on;
+%% hold on;
 % Labels and Legend
-xlabel('Exam 1 score')
-ylabel('Exam 2 score')
-
+%% xlabel('Exam 1 score')
+%% ylabel('Exam 2 score')
 % Specified in plot order
-legend('Admitted', 'Not admitted')
-hold off;
+%% legend('Admitted', 'Not admitted')
+%% hold off;
+
+% sigmoid(z) test code
+% z = 0
+% g3 = sigmoid(z)
+% z = [-5 0 5]
+% g3 = sigmoid(z)
+% z = zeros(5)
+% g3 = sigmoid(z)
+% z = ones(5) * 5
+% g3 = sigmoid(z)
+% z = ones(5) * (-5)
+% g3 = sigmoid(z)
 
 fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
-
+% pause;
 
 %% ============ Part 2: Compute Cost and Gradient ============
 %  In this part of the exercise, you will implement the cost and gradient
@@ -55,33 +65,33 @@ pause;
 %  costFunction.m
 
 %  Setup the data matrix appropriately, and add ones for the intercept term
-[m, n] = size(X);
+[m, n] = size(X); % m=100, n=2;
 
 % Add intercept term to x and X_test
-X = [ones(m, 1) X];
+X = [ones(m, 1) X]; %X=100 x 3;
 
-% Initialize fitting parameters
+% Initialize fitting parameters theta(3 by 1)
 initial_theta = zeros(n + 1, 1);
 
 % Compute and display initial cost and gradient
-[cost, grad] = costFunction(initial_theta, X, y);
 
-fprintf('Cost at initial theta (zeros): %f\n', cost);
-fprintf('Expected cost (approx): 0.693\n');
-fprintf('Gradient at initial theta (zeros): \n');
-fprintf(' %f \n', grad);
-fprintf('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n');
+% [cost, grad] = costFunction(initial_theta, X, y);
+% fprintf('Cost at initial theta (zeros): %f\n', cost);
+% fprintf('Expected cost (approx): 0.693\n');
+% fprintf('Gradient at initial theta (zeros): \n');
+% fprintf(' %f \n', grad);
+% fprintf('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n');
+% fprintf('\nProgram paused. Press enter to continue.\n');
+% pause;
 
 % Compute and display cost and gradient with non-zero theta
 test_theta = [-24; 0.2; 0.2];
 [cost, grad] = costFunction(test_theta, X, y);
-
 fprintf('\nCost at test theta: %f\n', cost);
 fprintf('Expected cost (approx): 0.218\n');
 fprintf('Gradient at test theta: \n');
 fprintf(' %f \n', grad);
 fprintf('Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n');
-
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
