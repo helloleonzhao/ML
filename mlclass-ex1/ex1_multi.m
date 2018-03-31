@@ -29,7 +29,7 @@
 %% ================ Part 1: Feature Normalization ================
 
 %% Clear and Close Figures
-clear all; close all; clc
+clear ; close all; clc
 
 fprintf('Loading data ...\n');
 
@@ -83,7 +83,7 @@ fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
 alpha = 0.01;
-num_iters = 100;
+num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(3, 1);
