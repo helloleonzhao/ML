@@ -62,45 +62,139 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-I = eye(num_labels);
-Y = zeros(m, num_labels);
-for i=1:m
-  Y(i, :)= I(y(i), :);
+% add bias 1 to a1, which is X;
+X = [ones(m, 1) X];
+
+% initialize yVector(numberOfLabels by numberOfSamples)
+yVector = zeros(num_labels, m);
+
+
+% Feedforward and Cost Function with Regularization Code Here
+
+for i = 1:m
+    
+    % change y [1;2;3...] to yVector [1;0;0...];[0;1;0...]
+    yVector(y(i),i) = 1;
+        
+    % use Theta1(25by401) and X(i,;)(1by401) to calculate a2(25by1)
+    z2 = Theta1 * X(i,:)';
+    a2 = sigmoid(z2);
+    
+    % add bias 1 to a2(26by1);
+    a2 = [1; a2];
+    
+    % use Theta2(10by26) and a2(26by1) to calculate a3(10by1)
+    z3 = Theta2 * a2; 
+    a3 = sigmoid(z3);
+     
+    for k = 1:num_labels  
+        % calculate the cost J = ...
+        % sum of (-1/m * y(i)*log(sigmoid(X*theta) + (1-y(i))*log(1-sigmoid(X*theta))
+        J = J + (1 / m * (- yVector(k,i) * log(a3(k)) - (1 - yVector(k,i)) * log(1-a3(k))));
+    
+        % A better way to code, use for loop to cover dJ(theta1...thetaN)
+        % for j = 1:size(grad)
+        % grad(j) = grad(j) + 1 / m * ( (s - y(i)) * X(i,j) );
+        % end
+    
+    end
 end
 
+% Regularized Cost Function
+% calculate the regularized cost h = h + lamda/(2m)*(Theta1^2+Theta2^2)
+h = 0;
 
+for j = 1:hidden_layer_size
+    % Theta(j,1) (a.k.a. the bias) is NOT regularized
+    for k = 2:(input_layer_size+1)
+        h = h + (lambda / (2 * m)) * Theta1(j,k)^2;
+    end
+end
 
-A1 = [ones(m, 1) X];
-Z2 = A1 * Theta1';
-A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)];
-Z3 = A2*Theta2';
-H = A3 = sigmoid(Z3);
+for j = 1:num_labels
+    % Theta(j,1) (a.k.a. the bias) is NOT regularized
+    for k = 2:(hidden_layer_size+1)
+        h = h + (lambda / (2 * m)) * Theta2(j,k)^2;
+    end
+end
 
+% add regularized cost h to cost function J
+J = J + h;
 
-penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
+% Backpropagation with Regularized Gradient Code Here
 
-J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
-J = J + penalty;
+% initialize yVector(numberOfLabels by numberOfSamples)
+yVector = zeros(num_labels, m);
 
-Sigma3 = A3 - Y;
-Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
+for k = 1:m
+    
+    % =========== Step 1: Calculate a1(400by1), a2(25by1), a3(10by1) =============
+    % set input layer's value a(k) to X(k) 
+    a1 = X(k,:); 
+        
+    % use Theta1(25by401) and X(i,;)(1by401) to calculate a2(25by1)
+    z2 = Theta1 * X(k,:)';
+    a2 = sigmoid(z2);
+    
+    % add bias 1 to a2(26by1);
+    a2 = [1; a2];
+    
+    % use Theta2(10by26) and a2(26by1) to calculate a3(10by1)
+    z3 = Theta2 * a2; 
+    a3 = sigmoid(z3);
+     
+    % =========== Step 2: Calculate d3(10by1) =============
+    % change y [1;2;3...] to yVector [1;0;0...];[0;1;0...]
+    yVector(y(k),k) = 1;
+    d3 = a3 - yVector(:,k);
 
+    % =========== Step 3: Calculate d2(25by1) =============
+    % size(Theta2) = [10,26]
+    % size(d3) = [10,1]
+    delta_2 = Theta2' * d3;
+    % Remove d2 from (26by10) to (25by10) because of bias unit 
+    delta_2 = delta_2(2:end);
+    s = sigmoidGradient(z2);
+    d2 = delta_2 .* s;
 
-Delta_1 = Sigma2'*A1;
-Delta_2 = Sigma3'*A2;
+    % =========== Step 4: Accumulate each sample's gradients into Theta1 and Theta2 ===
+    % size(d2) = [25,1]
+    % size(a1) = [1,401]
+    % size(Theta1_grad) = [25, 401]
+    Theta1_grad = Theta1_grad + d2 * a1;
+    
+    % size(d3) = [10,1]
+    % size(a2) = [26,1]
+    % size(Theta2_grad) = [10,26]
+    Theta2_grad = Theta2_grad + d3 * a2';
+end
 
+% =========== Step 5: Calculate Gradient Descent for Theta1 and Theta2 =============
+Theta1_grad = (1/m) * Theta1_grad;
+Theta2_grad = (1/m) * Theta2_grad;
 
-Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
-Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
+% Regularized Theta1_grad (25by401)
+% size(Theta1) = [25,401]
+r = zeros(size(Theta1));
+r = (lambda / m) * Theta1; 
+% reset r(1) as theta(0)=1 (a.k.a. j=0) doesn't need to be regularized
+r(:,1) = zeros(hidden_layer_size,1);
+% add r to Theta1_grad(25by401)
+Theta1_grad = Theta1_grad + r;
 
-
-% -------------------------------------------------------------
+% Regularized Theta2_grad (10by26)
+% size(Theta2) = [10,26]
+r = zeros(size(Theta2));
+r = (lambda / m) * Theta2; 
+% reset r(1) as theta(0)=1 (a.k.a. j=0) doesn't need to be regularized
+r(:,1) = zeros(num_labels,1);
+% add r to Theta2_grad(10by26)
+Theta2_grad = Theta2_grad + r;
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 
 end

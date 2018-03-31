@@ -26,6 +26,4 @@ for p = 1:numel(theta)
     perturb(p) = 0;
 end
 
-
-
 end
