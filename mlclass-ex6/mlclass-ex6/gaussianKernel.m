@@ -16,8 +16,16 @@ sim = 0;
 %
 %
 
-magnitude = sum((x1-x2).^2);
-sim = e^(-magnitude/(2*sigma^2));
+n = size(x1);
+sum = 0;
+
+for i = 1:n
+    sum = sum + (x1(i,1) - x2(i,1))^2;
+end
+
+sim = exp(-sum / (2 * sigma^2));
+
+
 
 
 % =============================================================

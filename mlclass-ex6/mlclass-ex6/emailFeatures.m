@@ -42,16 +42,23 @@ x = zeros(n, 1);
 %              word occurs in the email. That is, x(i) = 1 when word i
 %              is present in the email. Concretely, if the word 'the' (say,
 %              index 60) appears in the email, then x(60) = 1. The feature
-%              vector should look like:
+%              column vector should<nby1> look like:
 %
 %              x = [ 0 0 0 0 1 0 0 0 ... 0 0 0 0 1 ... 0 0 0 1 0 ..];
 %
 %
 
-
-for i = word_indices
-  x(i) = 1;
+% for i = word_indices
+%   x(i) = 1;
+% end
+for i = 1:size(word_indices)
+    x(word_indices(i),1) = 1;
 end
+
+
+
+
+
 
 
 % =========================================================================
