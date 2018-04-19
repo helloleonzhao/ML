@@ -35,8 +35,8 @@ load ('ex7data1.mat');
 plot(X(:, 1), X(:, 2), 'bo');
 axis([0.5 6.5 2 8]); axis square;
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+% fprintf('Program paused. Press enter to continue.\n');
+% pause;
 
 
 %% =============== Part 2: Principal Component Analysis ===============
@@ -64,8 +64,8 @@ fprintf('Top eigenvector: \n');
 fprintf(' U(:,1) = %f %f \n', U(1,1), U(2,1));
 fprintf('\n(you should expect to see -0.707107 -0.707107)\n');
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+% fprintf('Program paused. Press enter to continue.\n');
+% pause;
 
 
 %% =================== Part 3: Dimension Reduction ===================
@@ -123,7 +123,7 @@ pause;
 %  We display the first 36 eigenfaces.
 %
 fprintf(['\nRunning PCA on face dataset.\n' ...
-         '(this mght take a minute or two ...)\n\n']);
+         '(this might take a minute or two ...)\n\n']);
 
 %  Before running PCA, it is important to first normalize X by subtracting 
 %  the mean value from each feature
@@ -187,7 +187,7 @@ pause;
 
 close all; close all; clc
 
-% Re-load the image from the previous exercise and run K-Means on it
+% Reload the image from the previous exercise and run K-Means on it
 % For this to work, you need to complete the K-Means assignment first
 A = double(imread('bird_small.png'));
 

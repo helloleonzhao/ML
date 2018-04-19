@@ -13,10 +13,15 @@ centroids = zeros(K, size(X, 2));
 %               the dataset X
 %
 
+for i = 1:K
+    random_row = round(rand() * size(X,1));
+    centroids(i,:) = X(random_row,:);
+end
 
-
-
-
+% Suggested by Programming Exercis
+% Randomly reorder the indices of examples
+% randomX= randperm(size(X,1));
+% centroids = X(randomX(1:K),:);
 
 
 

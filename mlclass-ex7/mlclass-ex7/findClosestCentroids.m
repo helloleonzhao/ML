@@ -21,7 +21,26 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+[m,n] = size(X);
 
+for i = 1:m
+    closest_distance = inf;
+    for k = 1:K
+        % should consider a vectorized implementation to save a loop K
+        diff = X(i, :)' - centroids(k, :)';
+        distance = diff' * diff;
+        
+        % an example of hard coded with feature n = 2
+        % x1 = X(i,1) - centroids(k,1);
+        % x2 = X(i,2) - centroids(k,2);
+        % distance = sqrt(x1^2 + x2^2);
+        if (distance < closest_distance)
+            idx(i) = k;
+            closest_distance = distance;
+        end
+    end
+end
+    
 
 
 
