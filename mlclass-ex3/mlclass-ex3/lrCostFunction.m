@@ -36,21 +36,24 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+[J, grad] = costFunction(theta, X, y);
 
-% calculate hypothesis
-h = sigmoid(X*theta);
+% calculate derivative J(grad) and r = lamda/m*theta
+r = zeros(size(theta));
+r = (lambda / m) * theta; 
+% reset r(1) and theta(0)=1, doesn't need to be regularized
+r(1) = 0;
+theta(1) = 0;
+% add r(j) to grad(j)
+grad = grad + r;
 
-% regularize theta by removing first value
-theta_reg = [0;theta(2:end, :);];
-
-J = (1/m)*(-y'* log(h) - (1 - y)'*log(1-h))+(lambda/(2*m))*theta_reg'*theta_reg;
-
-grad = (1/m)*(X'*(h-y)+lambda*theta_reg);
-
-
-
-
-
-% =============================================================
+% calculate the regularized cost J = J + lamda/(2m)*theta(j)^2
+n = size(theta);
+h = 0;
+% note: theta(1) = 0;
+for j = 1:n
+    h = h + (lambda / (2 * m)) * theta(j)^2;
+end
+J = J + h;
 
 end
