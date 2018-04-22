@@ -8,5 +8,3 @@ I created a previate branch and only posted my code after each assignment's due 
 
 https://github.com/everpeace/ml-class-assignments
 
-https://github.com/joewandy/Stanford-Machine-Learning
-
