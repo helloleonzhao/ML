@@ -1,4 +1,6 @@
-I'm taking Machine Learning class taught by Prof. Andrew Ng at Coursera. 
+I have passed Machine Learning class taught by Prof. Andrew Ng at Coursera. 
+
+Here's the copy of the certificate, https://www.coursera.org/account/accomplishments/certificate/RZSV9CCQTBCW
 
 I found a very similar curriculum at this repository, https://github.com/schneems/Octave
 
