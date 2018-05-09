@@ -11,4 +11,5 @@ I created a previate branch and only posted my code after each assignment's due 
 ## Other Notable Open Source Machine Learning Sources
 
 https://github.com/everpeace/ml-class-assignments
+https://github.com/topics/coursera
 
